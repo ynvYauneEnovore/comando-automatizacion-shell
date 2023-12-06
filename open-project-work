@@ -1,0 +1,32 @@
+#comandos de power shell, temas y automatizacion de apertura de poryectos: desarrollamelo
+(@(& 'C:/Users/ynv/AppData/Local/Programs/oh-my-posh/bin/oh-my-posh.exe' init pwsh --config='C:\Users\ynv\AppData\Local\Programs\oh-my-posh\themes\pure.omp.json' --print) -join "`n") | Invoke-Expression 
+Import-Module Terminal-Icons
+Set-PSReadLineOption -PredictionViewStyle ListView
+
+function des {
+    param(
+        [string]$Atitulo
+    )
+
+    # Ruta a tus proyectos
+    $route = "E:\WWW\WORK\DESARROLLAMELO"
+
+    # Construir la ruta completa del proyecto
+    $rutaCompleta = Join-Path $route $Atitulo
+
+    # Verificar si el directorio existe
+    if (Test-Path $rutaCompleta -PathType Container) {
+        # Cambiar al directorio del proyecto
+        Set-Location $rutaCompleta
+
+        # Ejecutar 'php artisan serve'
+        Start-Process "php" -ArgumentList "artisan serve" -NoNewWindow -PassThru
+
+        # Abrir el proyecto en Visual Studio Code
+        Start-Process "code" -ArgumentList "." -NoNewWindow -PassThru
+    } else {
+        Write-Host "El directorio del proyecto no existe: $rutaCompleta"
+    }
+}
+
+
